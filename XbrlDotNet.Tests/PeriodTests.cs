@@ -1,3 +1,5 @@
+using XbrlDotNet.Dimensions;
+
 namespace XbrlDotNet.Tests;
 
 public static class PeriodTests
@@ -78,26 +80,36 @@ public static class PeriodTests
     private record ContextPeriodDuration(DateTime Start, DateTime End) : IContext.PeriodDuration
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 
     private record ContextPeriodInstant(DateTime Instant) : IContext.PeriodInstant
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 
     private record ContextWithNoPeriod([Concept("x", "x")] string Something) : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 
     private record TestReportPeriodDuration(DateTime Start, DateTime End, ContextWithNoPeriod TestContext)
         : ITaxonomy.PeriodDuration
     {
-        public IEnumerable<IContext> Contexts => [TestContext];
+        IEnumerable<IContext> ITaxonomy.Contexts => [TestContext];
+        NamespacePrefix ITaxonomy.Domain => new("frc-vt-dm", FrcVtDm);
+        NamespacePrefix ITaxonomy.Dimension => new("frc-vt-dim", FrcVtDim);
     }
 
     private record TestReportPeriodPeriodInstant(DateTime Instant, ContextWithNoPeriod TestContext) : ITaxonomy.PeriodInstant
     {
-        public IEnumerable<IContext> Contexts => [TestContext];
+        IEnumerable<IContext> ITaxonomy.Contexts => [TestContext];
+        NamespacePrefix ITaxonomy.Domain => new("frc-vt-dm", FrcVtDm);
+        NamespacePrefix ITaxonomy.Dimension => new("frc-vt-dim", FrcVtDim);
     }
 }

@@ -1,3 +1,5 @@
+using XbrlDotNet.Dimensions;
+
 namespace XbrlDotNet.Tests;
 
 public static class UnitsTests
@@ -21,5 +23,7 @@ public static class UnitsTests
     ) : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 }

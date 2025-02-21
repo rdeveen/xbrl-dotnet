@@ -1,3 +1,5 @@
+using XbrlDotNet.Dimensions;
+
 namespace XbrlDotNet.Tests;
 
 public static class DecimalsTests
@@ -37,6 +39,8 @@ public static class DecimalsTests
     ) : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 
     private record ContextWithDecimals(
@@ -44,5 +48,7 @@ public static class DecimalsTests
     ) : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 }

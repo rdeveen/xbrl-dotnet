@@ -1,3 +1,6 @@
+using XbrlDotNet.Dimensions;
+using Entity = XbrlDotNet.Tests.TestTaxonomy.Entity;
+
 namespace XbrlDotNet.Tests;
 
 public static class TypedMembersTests
@@ -18,17 +21,20 @@ public static class TypedMembersTests
             .Should().HaveValue("OwnerName");
     }
 
-    private record TestContext(
-        [XbrlTypedMember("frc-vt-dim:OwnersAxis", "frc-vt-dm")]
-        string OwnersTypedMember) : IContext
+    private record TestContext(string OwnersTypedMember) : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        TypedMember[] IContext.TypedMembers =>
+        [
+            new (FrcVtDm + "OwnersTypedMember", FrcVtDim + "OwnersAxis", OwnersTypedMember)
+        ];
+        ExplicitMember[] IContext.ExplicitMembers => [];
     }
 
-    [XbrlTypedDomainNamespace("frc-vt-dm", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-domains")]
-    [XbrlDimensionNamespace("frc-vt-dim", "https://www.sbrnexus.nl/vt17/frc/20240131/dictionary/frc-vt-axes")]
     private record TestTaxonomy(TestContext TestContext) : ITaxonomy
     {
-        public IEnumerable<IContext> Contexts => [TestContext];
+        IEnumerable<IContext> ITaxonomy.Contexts => [TestContext];
+        NamespacePrefix ITaxonomy.Domain => new("frc-vt-dm", FrcVtDm);
+        NamespacePrefix ITaxonomy.Dimension => new("frc-vt-dim", FrcVtDim);
     }
 }

@@ -1,3 +1,4 @@
+using XbrlDotNet.Dimensions;
 using Xunit.Abstractions;
 
 namespace XbrlDotNet.Tests;
@@ -79,17 +80,22 @@ public class ContextTests(ITestOutputHelper output)
         : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 
     private class ContextWithProperties : IContext
     {
         [NlCommonData] public string? ChamberOfCommerceRegistrationNumber { get; set; }
-
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 
     private record ContextName : IContext
     {
         IEntity IContext.Entity => Entity.Dummy;
+        ExplicitMember[] IContext.ExplicitMembers => [];
+        TypedMember[] IContext.TypedMembers => [];
     }
 }
